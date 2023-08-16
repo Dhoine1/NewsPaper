@@ -1,0 +1,84 @@
+from news.models import *
+# Создание 2-х пользователей
+user_1 = User.objects.create_user('Admin')
+user_2 = User.objects.create_user('User')
+
+# Создание моделе Author связанных с пользователями
+Author.objects.create(name=user_1)
+Author.objects.create(name=user_2)
+
+# Создание 4-х категорий
+Category.objects.create(subject='Спорт')
+Category.objects.create(subject='Политика')
+Category.objects.create(subject='Образование')
+Category.objects.create(subject='Культура')
+
+# Добавление 2-х статей и новости
+Post.objects.create(author=Author.objects.get(id=1), news_type='NW', article_header="Станислав Черчесов отказался возглавить «Ахмат»", article_text="«Ахмат» предложил Станисла
+ву Черчесову возглавить команду, но тренер отказался от такого варианта. Об этом «Чемпионату» сообщил источник, близкий к клубу.")
+Post.objects.create(author=Author.objects.get(id=1), news_type='AR', article_header="Что такое межпланетная станция «Луна-25»?", article_text="«Луна-25» — это автоматическая м
+ежпланетная станция. Предполагается, что она впервые в истории совершит посадку на Южном полюсе Луны. Раньше исследования проходили преимущественно в экваториаль
+ной зоне естественного спутника Земли, пока не выяснилось, что на полюсах условия сильно отличаются от центральных зон.")
+Post.objects.create(author=Author.objects.get(id=2), news_type='AR', article_header="«Аум синрике», «Небесные врата» и семья Мэнсона.", article_text="На Netflix вышел документ
+альный сериал «Как стать вождем секты» со звездой «Игры престолов» Питером Динклейджем в качестве рассказчика, который чуть ли не на пальцах раскладывает перед з
+рителями подробный план по созданию масштабной тоталитарной секты. На деле, конечно, этот проект представляет собой не руководство, но экскурс в историю наиболее
+ известных, жутких и странных культов XX века, а также судьбы их лидеров. «Лента.ру» выписала основные тактики самопровозглашенных мессий и деструктивных сект, п
+редставленные в сериале, и рассказывает, как не попасться в их ловушки.")
+
+# Присвоение новостям категорий
+Post.objects.get(id=1).cat_subject.add(Category.objects.get(subject='Спорт'))
+Post.objects.get(id=2).cat_subject.add(Category.objects.get(subject='Образование'))
+Post.objects.get(id=2).cat_subject.add(Category.objects.get(subject='Культура'))
+Post.objects.get(id=3).cat_subject.add(Category.objects.get(subject='Культура'))
+Post.objects.get(id=3).cat_subject.add(Category.objects.get(subject='Политика'))
+
+# Создание комментариев к моделям Post
+Comment.objects.create(id_post=Post.objects.get(id=1), id_user=Author.objects.get(id=1).name, comment_text='Не интересуюсь спортом')
+Comment.objects.create(id_post=Post.objects.get(id=1), id_user=Author.objects.get(id=2).name, comment_text='А мне было интересно. Спасибо!')
+Comment.objects.create(id_post=Post.objects.get(id=2), id_user=Author.objects.get(id=2).name, comment_text='Чего только в интернете не узнаешь...')
+Comment.objects.create(id_post=Post.objects.get(id=2), id_user=Author.objects.get(id=1).name, comment_text='Давно я в отпуске не был :(')
+Comment.objects.create(id_post=Post.objects.get(id=3), id_user=Author.objects.get(id=1).name, comment_text='Простите, а где тут политика?')
+Comment.objects.create(id_post=Post.objects.get(id=3), id_user=Author.objects.get(id=2).name, comment_text='Обязательно надо будет посмотреть перед сном.')
+
+# Применение like() и dislike() к новостям и комментариям
+Post.objects.get(id=1).dislike()
+Post.objects.get(id=2).like()
+Post.objects.get(id=2).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=3).dislike()
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=4).like()
+Comment.objects.get(id=4).like()
+Comment.objects.get(id=2).dislike()
+Comment.objects.get(id=2).dislike()
+Comment.objects.get(id=6).dislike()
+Comment.objects.get(id=2).like()
+Comment.objects.get(id=2).like()
+Comment.objects.get(id=2).like()
+
+# Обновление рейтинга авторов
+Author.objects.get(id=1).update_rating()
+Author.objects.get(id=2).update_rating()
+
+# Вывод username лучшего пользователя
+a = Author.objects.order_by('-author_rating')[:1]
+for i in a:
+    i.name.username
+	i.author_rating
+	
+# Вывод параметров лучшей статьи
+b = Post.objects.order_by('-article_rating')[:1]
+for i in b:
+	i.create_date
+	i.author.name.username
+	i.article_rating
+	i.article_header
+    i.preview()
+	
+# Вывод всех комментариев к лучшей статье
+c = Comment.objects.filter(id_post=b)
+for i in c:
+	i.datatime_comment
+    i.id_user.username
+    i.rating_comment
+    i.comment_text
