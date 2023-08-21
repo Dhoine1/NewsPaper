@@ -1,0 +1,37 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+
+{% block title %}
+NEWS
+{% endblock title %}
+
+
+{% block content %}
+<h1>Все новости</h1>
+<hr><hr>
+
+<table align="center">
+    <tr>
+               <td width="300" height="50"><h2>Заголовок</h2></td>
+               <td width="200"><h2>Дата создания</h2></td>
+               <td><h2>Содержимое</h2></td>
+
+           </tr>
+    {% for post in posts %}
+    <tr>
+        <td  height="50">
+            <b>{{ post.article_header|censor }}  </b>
+        </td>
+        <td>
+            {{ post.create_date }}
+        </td>
+        <td>
+            {{ post.article_text|truncatechars:20|censor }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock content %}
