@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+{% block content %}
+
+   {% for c in com %}
+  {{ c.comment_text }} <br>
+  {% endfor %}
+
+{% endblock content %}
+
+</html>

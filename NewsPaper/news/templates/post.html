@@ -7,20 +7,31 @@
 
 {% block content %}
 <p align="center">
-<h1>Новость №{{ post.id }}</h1><br>
+<h1>Запись №{{ post.id }}</h1><br>
 
 
 <h2>{{ post.article_header|censor }}</h2>
 <br>
 <p align="left">
+Тип записи: {{ post.news_type }} <br>
 Создана: {{ post.create_date|date:'d M Y' }}<br>
 Автор: {{ post.author.name.username }}<br>
 
 <br><br>
   {{ post.article_text|censor }}
-
 <br><br>
 
 Рейтинг статьи: {{ post.article_rating }}
+
+
+{% if post.news_type == 'NW' %}
+  <br>
+ <a href="../news/{{ post.id }}/edit"> Редактировать новость</a><br>
+ <a href="../news/{{ post.id }}/delete"> Удалить новость</a>
+{% elif post.news_type == 'AR' %}
+  <br>
+ <a href="../articles/{{ post.id }}/edit"> Редактировать статью</a><br>
+ <a href="../articles/{{ post.id }}/delete"> Удалить статью</a>
+{% endif %}
 
 {% endblock content %}
