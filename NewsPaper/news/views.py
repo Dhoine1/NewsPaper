@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from .models import Post, Comment
 from django.shortcuts import render
 from .filters import PostFilter
@@ -46,10 +47,11 @@ class PostSearch(ListView):
         return context
 
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin, CreateView):
     form_class = NewsForm
     model = Post
     template_name = 'news_create.html'
+    permission_required = ('news.add_post',)
 
     def form_valid(self, form):
         post = form.save(commit=False)
@@ -57,10 +59,12 @@ class NewsCreate(CreateView):
         return super().form_valid(form)
 
 
-class NewsUpdate(UpdateView):
+class NewsUpdate(PermissionRequiredMixin, UpdateView):
     form_class = NewsForm
     model = Post
     template_name = 'news_create.html'
+    raise_exception = True
+    permission_required = ('news.change_post',)
 
     def form_valid(self, form):
         post = form.save(commit=False)
@@ -68,26 +72,18 @@ class NewsUpdate(UpdateView):
         return super().form_valid(form)
 
 
-class NewsDelete(DeleteView):
+class NewsDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('Articles')
+    permission_required = ('news.delete_post',)
 
 
-class ArticlesCreate(CreateView):
+class ArticlesCreate(PermissionRequiredMixin, CreateView):
     form_class = NewsForm
     model = Post
     template_name = 'news_create.html'
-
-    def form_valid(self, form):
-        post = form.save(commit=False)
-        post.news_type = 'AR'
-        return super().form_valid(form)
-
-class ArticlesUpdate(UpdateView):
-    form_class = NewsForm
-    model = Post
-    template_name = 'news_create.html'
+    permission_required = ('news.add_post',)
 
     def form_valid(self, form):
         post = form.save(commit=False)
@@ -95,7 +91,20 @@ class ArticlesUpdate(UpdateView):
         return super().form_valid(form)
 
 
-class ArticlesDelete(DeleteView):
+class ArticlesUpdate(PermissionRequiredMixin, UpdateView):
+    form_class = NewsForm
+    model = Post
+    template_name = 'news_create.html'
+    permission_required = ('news.change_post',)
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.news_type = 'AR'
+        return super().form_valid(form)
+
+
+class ArticlesDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('Articles')
+    permission_required = ('news.delete_post',)
