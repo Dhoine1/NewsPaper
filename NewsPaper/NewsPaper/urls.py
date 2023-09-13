@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from news.views import  NewsCreate, NewsUpdate, NewsDelete, ArticlesCreate, ArticlesUpdate, ArticlesDelete
+from news.views import  NewsCreate, NewsUpdate, NewsDelete, ArticlesCreate, ArticlesUpdate, ArticlesDelete, subscriptions
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,4 +14,5 @@ urlpatterns = [
     path('articles/create/', ArticlesCreate.as_view(), name='News_Create'),
     path('articles/<int:pk>/edit/', ArticlesUpdate.as_view(), name='News_Update'),
     path('articles/<int:pk>/delete/', ArticlesDelete.as_view(), name='News_Delete'),
+    path('subscriptions/', subscriptions, name='subscriptions'),
 ]

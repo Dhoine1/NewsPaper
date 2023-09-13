@@ -16,7 +16,10 @@
 Тип записи: {{ post.news_type }} <br>
 Создана: {{ post.create_date|date:'d M Y' }}<br>
 Автор: {{ post.author.name.username }}<br>
-
+Категории:
+    {% for category in post.cat_subject.all %}
+        {{ category }},
+    {% endfor %}
 <br><br>
   {{ post.article_text|censor }}
 <br><br>
@@ -33,5 +36,7 @@
  <a href="../articles/{{ post.id }}/edit"> Редактировать статью</a><br>
  <a href="../articles/{{ post.id }}/delete"> Удалить статью</a>
 {% endif %}
+    <hr>
+
 
 {% endblock content %}

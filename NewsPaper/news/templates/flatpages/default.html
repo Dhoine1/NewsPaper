@@ -52,14 +52,13 @@
 
             {% if request.user.is_authenticated %}
             <p align="right"> Hello, {{ request.user.username }}  --
-                <a href = '../accounts/logout'>    Logout </a> </p>
+                <a href = '../accounts/logout'>    Logout </a> <br>
+                <a href="{{ settings.SITE_URL }}/subscriptions/">Ваши подписки</a></p>
            {% else %}
-            <p align="right">
+                <p align="right">
                 <a href = '../accounts/login'> Login </a></p>
            {% endif %}
 
-
-    <br><br><br>
            {% block content %}
            {{ flatpage.content }}
            {% endblock content %}
