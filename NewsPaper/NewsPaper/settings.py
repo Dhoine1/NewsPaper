@@ -154,7 +154,7 @@ ACCOUNT_FORMS = {"signup": "news.forms.CustomSignupForm"}
 LOGIN_REDIRECT_URL = "/news"
 LOGOUT_REDIRECT_URL = "/news"
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "dhoine5@yandex.ru"
@@ -165,3 +165,9 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "dhoine5@yandex.ru"
 
 SERVER_EMAIL = "dhoine5@yandex.ru"
+
+CELERY_BROKER_URL = 'redis://default:5wz3pZPLqkphMnHCosAWdPFF00H7JMZ1@redis-14517.c263.us-east-1-2.ec2.cloud.redislabs.com:14517'
+CELERY_RESULT_BACKEND = 'redis://default:5wz3pZPLqkphMnHCosAWdPFF00H7JMZ1@redis-14517.c263.us-east-1-2.ec2.cloud.redislabs.com:14517'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

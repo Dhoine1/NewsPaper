@@ -23,6 +23,7 @@ class PostDetail(DetailView):
     template_name = 'post.html'
     context_object_name = 'post'
 
+
 def index(request):
     com = Comment.objects.all()
     return render(request, 'index.html', context={'com': com})
